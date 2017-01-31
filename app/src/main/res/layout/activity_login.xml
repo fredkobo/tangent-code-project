@@ -8,10 +8,42 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="fredkobo.co.za.codeproject.LoginActivity">
+    tools:context="fredkobo.co.za.codeproject.presentation.login.LoginActivity">
+
+    <LinearLayout
+        android:id="@+id/credential_edit_texts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
+
+        <EditText
+            android:id="@+id/ed_username"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="@string/username"/>
+
+        <EditText
+            android:id="@+id/ed_password"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:layout_marginTop="20dp"/>
+    </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_error_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        tools:text="@string/error_text"
+        android:layout_below="@id/credential_edit_texts"/>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:layout_below="@id/credential_edit_texts"
+        android:layout_alignParentRight="true"/>
 </RelativeLayout>
