@@ -1,5 +1,6 @@
 package fredkobo.co.za.codeproject.presentation.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import fredkobo.co.za.codeproject.R;
+import fredkobo.co.za.codeproject.presentation.home.HomeActivity;
 
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
@@ -25,7 +27,10 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         setContentView(R.layout.activity_login);
 
         loginPresenter = new LoginPresenter(this);
+        setUpComponents();
+    }
 
+    public void setUpComponents() {
         edUsername = (EditText) findViewById(R.id.ed_username);
         edPassword = (EditText) findViewById(R.id.ed_password);
         tvErrorText = (TextView) findViewById(R.id.tv_error_text);
@@ -37,6 +42,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 loginPresenter.login(edUsername.getText().toString(), edPassword.getText().toString());
             }
         });
+
     }
 
     @Override
@@ -46,7 +52,19 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
-    public void authenticationSuccessful(String token) {
-        // TODO proceed to next screen
+    public void authenticationSuccessful() {
+        Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
+        startActivity(homeIntent);
+        finish();
+    }
+
+    @Override
+    public void showUsernameFieldError(String usernameError) {
+        edUsername.setError(usernameError);
+    }
+
+    @Override
+    public void showPasswordFieldError(String passwordError) {
+        edPassword.setError(passwordError);
     }
 }

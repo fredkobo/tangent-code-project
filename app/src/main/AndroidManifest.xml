@@ -19,6 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".presentation.home.HomeActivity"
+            android:label="@string/home" >
+        </activity>
     </application>
 
 </manifest>

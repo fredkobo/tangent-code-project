@@ -5,6 +5,8 @@ package fredkobo.co.za.codeproject.presentation.login;
  */
 
 public interface LoginView {
-   void  showLoginFailureMessage(String failureMessage);
-   void  authenticationSuccessful(String token);
+    void showLoginFailureMessage(String failureMessage);
+    void authenticationSuccessful();
+    void showUsernameFieldError(String usernameError);
+    void showPasswordFieldError(String passwordError);
 }

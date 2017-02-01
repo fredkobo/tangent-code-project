@@ -4,4 +4,5 @@
     <string name="password">Password</string>
     <string name="error_text">error text</string>
     <string name="login">Login</string>
+    <string name="home">Home</string>
 </resources>
