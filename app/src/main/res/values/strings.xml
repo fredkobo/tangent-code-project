@@ -5,4 +5,7 @@
     <string name="error_text">error text</string>
     <string name="login">Login</string>
     <string name="home">Home</string>
+    <string name="view_details">View Details</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>

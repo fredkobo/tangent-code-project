@@ -40,7 +40,6 @@ public class AuthenticationRequest extends AsyncTask<Void, Void, String> {
             URL authenticationUrl = new URL("http://userservice.staging.tangentmicroservices.com:80/api-token-auth/");
             connection = (HttpURLConnection) authenticationUrl.openConnection();
             connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
             connection.setConnectTimeout(ServiceConfigConstants.CONNECTION_TIMEOUT);
             connection.setReadTimeout(ServiceConfigConstants.READ_TIMEOUT);
             connection.addRequestProperty("Content-Type", "application/json");
