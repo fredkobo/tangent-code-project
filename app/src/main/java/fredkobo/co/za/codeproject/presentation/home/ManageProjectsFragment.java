@@ -12,17 +12,25 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import fredkobo.co.za.codeproject.R;
-import fredkobo.co.za.codeproject.domain.interactors.project.Project;
+import fredkobo.co.za.codeproject.domain.interactors.project.dto.Project;
 
 /**
  * Created by frederickkobo on 2017/02/01.
  */
 
-public class ManageProjectsFragment extends Fragment {
+public class ManageProjectsFragment extends Fragment implements ManageProjectView {
     private View rootView;
     private RecyclerView projectRecyclerView;
-    private ProjectAdapter ProjectAdapter;
+    private ProjectAdapter projectAdapter;
     private ArrayList<Project> projectList;
+    private HomeView homeView;
+
+    public static ManageProjectsFragment newInstance(HomeView homeView, ArrayList<Project> projectList) {
+        ManageProjectsFragment fragment = new ManageProjectsFragment();
+        fragment.homeView = homeView;
+        fragment.projectList = projectList;
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,13 +40,14 @@ public class ManageProjectsFragment extends Fragment {
     }
 
     private void setUpComponents() {
-        ProjectAdapter = new ProjectAdapter(projectList);
+        projectAdapter = new ProjectAdapter(projectList, homeView);
         projectRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_projects);
         projectRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        projectRecyclerView.setAdapter(ProjectAdapter);
+        projectRecyclerView.setAdapter(projectAdapter);
     }
 
-    public void setProjectList(ArrayList<Project> projects) {
-        projectList = projects;
+    @Override
+    public void deleteSuccess(int deletePosition) {
+        projectAdapter.removeAt(deletePosition);
     }
 }

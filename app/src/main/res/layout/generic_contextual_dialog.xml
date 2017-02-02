@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contextual_dialog_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tuna"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/tv_dialog_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:padding="16dp"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        tools:text="Dialog Content" />
+
+    <Button
+        android:id="@+id/positive_button"
+        android:layout_below="@+id/tv_dialog_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/misterMustard"
+        android:textAllCaps="false"
+        android:textColor="@color/martiniqueLight"
+        android:textSize="18sp"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="15dp"
+        tools:text="Positive Button" />
+
+</RelativeLayout>

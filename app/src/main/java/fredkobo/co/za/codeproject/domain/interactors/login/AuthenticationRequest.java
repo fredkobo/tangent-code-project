@@ -37,7 +37,7 @@ public class AuthenticationRequest extends AsyncTask<Void, Void, String> {
         String response;
         HttpURLConnection connection = null;
         try {
-            URL authenticationUrl = new URL("http://userservice.staging.tangentmicroservices.com:80/api-token-auth/");
+            URL authenticationUrl = new URL(ServiceConfigConstants.AUTHORIZATION_URL);
             connection = (HttpURLConnection) authenticationUrl.openConnection();
             connection.setRequestMethod("POST");
             connection.setConnectTimeout(ServiceConfigConstants.CONNECTION_TIMEOUT);

@@ -1,4 +1,4 @@
-package fredkobo.co.za.codeproject.domain.interactors.project;
+package fredkobo.co.za.codeproject.domain.interactors.project.dto;
 
 import java.util.ArrayList;
 

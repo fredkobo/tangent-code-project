@@ -1,14 +1,13 @@
-package fredkobo.co.za.codeproject.domain.interactors.project;
+package fredkobo.co.za.codeproject.domain.interactors.project.dto;
 
 /**
  * Created by frederickkobo on 2017/02/01.
  */
 
+
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-public class Project {
+public class ProjectData {
 
     @SerializedName("pk")
     private int pk;
@@ -24,16 +23,12 @@ public class Project {
     private boolean isBillable;
     @SerializedName("is_active")
     private boolean isActive;
-    @SerializedName("task_set")
-    private List<TaskSet> taskSet = null;
-    @SerializedName("resource_set")
-    private List<ResourceSet> resourceSet = null;
 
     public int getPk() {
         return pk;
     }
 
-    public void setPk(int pk) {
+    public void setPk(Integer pk) {
         this.pk = pk;
     }
 
@@ -83,22 +78,6 @@ public class Project {
 
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
-    }
-
-    public List<TaskSet> getTaskSet() {
-        return taskSet;
-    }
-
-    public void setTaskSet(List<TaskSet> taskSet) {
-        this.taskSet = taskSet;
-    }
-
-    public List<ResourceSet> getResourceSet() {
-        return resourceSet;
-    }
-
-    public void setResourceSet(List<ResourceSet> resourceSet) {
-        this.resourceSet = resourceSet;
     }
 
 }

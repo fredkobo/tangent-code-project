@@ -1,5 +1,6 @@
 package fredkobo.co.za.codeproject.presentation.home;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,9 +9,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import fredkobo.co.za.codeproject.R;
-import fredkobo.co.za.codeproject.domain.interactors.project.Project;
+import fredkobo.co.za.codeproject.domain.interactors.project.dto.Project;
+import fredkobo.co.za.codeproject.presentation.shared.GenericContextualDialog;
 
 /**
  * Created by frederickkobo on 2017/02/01.
@@ -19,27 +22,88 @@ import fredkobo.co.za.codeproject.domain.interactors.project.Project;
 public class HomeActivity extends AppCompatActivity implements HomeView {
 
     private HomePresenterInterface homePresenter;
+    private int deletePosition;
+    private ManageProjectsFragment manageProjectsFragment;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        setUpComponents();
         homePresenter = new HomePresenter(this);
+        progressDialog.show();
         homePresenter.retrieveProjectList();
+    }
+
+    private void setUpComponents() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setIndeterminate(true);
     }
 
 
     @Override
     public void retrieveProjectListSuccess(ArrayList<Project> projects) {
-        ManageProjectsFragment manageProjectsFragment = new ManageProjectsFragment();
-        manageProjectsFragment.setProjectList(projects);
+        manageProjectsFragment = ManageProjectsFragment.newInstance(this, projects);
         startFragment(manageProjectsFragment);
-
+        progressDialog.dismiss();
     }
 
     @Override
     public void retrieveProjectListFailure(String failureMessage) {
+        showDialog(failureMessage);
+        progressDialog.dismiss();
+    }
 
+    @Override
+    public void editProjectSuccess(Project project) {
+        progressDialog.dismiss();
+    }
+
+    @Override
+    public void editProjectFailure(String response) {
+        progressDialog.dismiss();
+    }
+
+    @Override
+    public void deleteSuccess() {
+        manageProjectsFragment.deleteSuccess(deletePosition);
+    }
+
+    @Override
+    public void deleteFailed() {
+        // TODO show failure dialog
+    }
+
+    @Override
+    public void addProjectSuccess() {
+        progressDialog.dismiss();
+        showDialog("Project ADDED");
+    }
+
+    @Override
+    public void addProjectFailure(String response) {
+        showDialog(response);
+        progressDialog.dismiss();
+    }
+
+    @Override
+    public void deleteProjectInvoked(int pk, int position) {
+        homePresenter.deleteProject(pk);
+    }
+
+    @Override
+    public void addProject(String title, String description, Date start_date, Date end_date, boolean isBillable, boolean isActive) {
+        homePresenter.addProject(title, description, start_date, end_date, isBillable, isActive);
+        progressDialog.show();
+    }
+
+    @Override
+    public void startAddFragment() {
+        AddEditFragment addEditFragment = AddEditFragment.newInstance(this);
+        startFragment(addEditFragment);
     }
 
     private void startFragment(Fragment fragment) {
@@ -47,6 +111,11 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
+    }
+
+    private void showDialog(String content) {
+        GenericContextualDialog dialog = GenericContextualDialog.newInstance(content);
+        dialog.show(getSupportFragmentManager(), "Error dialog");
     }
 
 }

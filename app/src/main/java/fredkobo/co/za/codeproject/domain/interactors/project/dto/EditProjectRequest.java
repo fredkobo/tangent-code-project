@@ -1,28 +1,38 @@
-package fredkobo.co.za.codeproject.domain.interactors.project;
+package fredkobo.co.za.codeproject.domain.interactors.project.dto;
 
 import android.os.AsyncTask;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
 
 import fredkobo.co.za.codeproject.framework.ApplicationCache;
 import fredkobo.co.za.codeproject.framework.ServiceConfigConstants;
 import fredkobo.co.za.codeproject.presentation.home.HomePresenterInterface;
 
-
 /**
- * Created by frederickkobo on 2017/02/01.
+ * Created by frederickkobo on 2017/02/02.
  */
 
-public class GetProjectListRequest extends AsyncTask<Void, Void, String> {
+public class EditProjectRequest extends AsyncTask<Void, Void, String> {
 
-    private String TAG = GetProjectListRequest.class.getSimpleName();
     private int responseCode;
+    private int pk;
+    private String title;
+    private String description;
+    private Date start_date;
     private HomePresenterInterface homePresenter;
 
-    public GetProjectListRequest(HomePresenterInterface homePresenterInterface) {
+    public EditProjectRequest(int pk, String title, String description, Date start_date, HomePresenterInterface homePresenterInterface) {
+        this.pk = pk;
+        this.title = title;
+        this.description = description;
+        this.start_date = start_date;
         this.homePresenter = homePresenterInterface;
     }
 
@@ -31,14 +41,25 @@ public class GetProjectListRequest extends AsyncTask<Void, Void, String> {
         String response;
         HttpURLConnection connection = null;
         try {
-            URL authenticationUrl = new URL("http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/");
+            URL authenticationUrl = new URL(ServiceConfigConstants.ROOT_PROJECT_URL + pk + "/");
             connection = (HttpURLConnection) authenticationUrl.openConnection();
-            connection.setRequestMethod("GET");
+            connection.setRequestMethod("PUT");
             connection.setConnectTimeout(ServiceConfigConstants.CONNECTION_TIMEOUT);
             connection.setReadTimeout(ServiceConfigConstants.READ_TIMEOUT);
             connection.addRequestProperty("Content-Type", "application/json");
             connection.addRequestProperty("Authorization", "Token " + ApplicationCache.getAuthenticationToken());
             connection.connect();
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("title", title);
+            jsonObject.put("description", description);
+            jsonObject.put("start_date", start_date);
+
+
+            DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
+            outputStream.writeBytes(jsonObject.toString());
+            outputStream.flush();
+            outputStream.close();
 
             responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -69,9 +90,11 @@ public class GetProjectListRequest extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String response) {
         if (responseCode == HttpURLConnection.HTTP_OK) {
-            homePresenter.onRetrieveProjectListSuccess(response);
+            homePresenter.onEditProjectRequestSuccess(response);
+        } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND){
+            homePresenter.onEditProjectRequestFailure("Not found.");
         } else {
-            homePresenter.onRetrieveProjectListFailure(response);
+            homePresenter.onEditProjectRequestFailure(response);
         }
     }
 }

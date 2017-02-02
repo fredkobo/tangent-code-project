@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import fredkobo.co.za.codeproject.R;
-import fredkobo.co.za.codeproject.domain.interactors.project.Project;
+import fredkobo.co.za.codeproject.domain.interactors.project.dto.Project;
 
 /**
  * Created by frederickkobo on 2017/02/01.
@@ -19,9 +19,11 @@ import fredkobo.co.za.codeproject.domain.interactors.project.Project;
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHolder> {
 
     private ArrayList<Project> projectList;
+    private HomeView homeView;
 
-    public ProjectAdapter(ArrayList<Project> projectList) {
+    public ProjectAdapter(ArrayList<Project> projectList, HomeView homeView) {
         this.projectList = projectList;
+        this.homeView = homeView;
     }
 
     @Override
@@ -31,7 +33,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tvProjectName.setText(projectList.get(position).getTitle());
         holder.tvProjectKey.setText("PK: " + projectList.get(position).getPk());
         holder.tvStartDate.setText("Start Date: " + projectList.get(position).getStartDate());
@@ -45,16 +47,14 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO complete
-
+                homeView.startAddFragment();
             }
         });
 
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO complete
-
+                homeView.deleteProjectInvoked(projectList.get(position).getPk(), position);
             }
         });
     }
@@ -86,7 +86,14 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
             tvStartDate = (TextView) view.findViewById(R.id.tv_start_date);
             btnViewDetails = (Button) view.findViewById(R.id.btn_view_details);
             btnDelete = (Button) view.findViewById(R.id.btn_delete);
-            btnEdit = (Button) view.findViewById(R.id.btn_view_details);
+            btnEdit = (Button) view.findViewById(R.id.btn_edit);
         }
+    }
+
+    public void removeAt(int position) {
+        projectList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, projectList.size());
+        notifyItemRangeChanged(position, projectList.size());
     }
 }
