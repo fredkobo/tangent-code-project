@@ -2,7 +2,6 @@ package fredkobo.co.za.codeproject.presentation.shared;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by frederickkobo on 2017/02/02.
@@ -10,19 +9,13 @@ import java.util.Date;
 
 public class Utils {
 
-    public static Date getDateFromString(String dateString) {
-        Date date = null;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD");
+    public static boolean isValidDate(String dateString) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            date = dateFormat.parse(dateString);
-        } catch (ParseException ex) {
-            ex.printStackTrace();
+            df.parse(dateString);
+            return true;
+        } catch (ParseException e) {
+            return false;
         }
-        return date;
-    }
-
-    public enum addOrEdit {
-        ADD,
-        EDIT
     }
 }

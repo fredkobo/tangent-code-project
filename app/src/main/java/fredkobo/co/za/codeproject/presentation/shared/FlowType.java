@@ -6,5 +6,6 @@ package fredkobo.co.za.codeproject.presentation.shared;
 
 public enum FlowType {
     ADD,
-    EDIT
+    EDIT,
+    VIEW
 }

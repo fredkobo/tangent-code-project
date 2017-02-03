@@ -13,6 +13,7 @@ import android.widget.EditText;
 import fredkobo.co.za.codeproject.R;
 import fredkobo.co.za.codeproject.domain.interactors.project.dto.Project;
 import fredkobo.co.za.codeproject.presentation.shared.FlowType;
+import fredkobo.co.za.codeproject.presentation.shared.Utils;
 
 /**
  * Created by frederickkobo on 2017/02/02.
@@ -57,13 +58,32 @@ public class AddEditFragment extends Fragment {
         cbIsActive = (CheckBox) rootView.findViewById(R.id.cb_is_active);
         btnSubmit = (Button) rootView.findViewById(R.id.btn_submit);
 
-        if(flowType == FlowType.EDIT  && project != null) {
+        if((flowType == FlowType.EDIT || flowType == FlowType.VIEW) && project != null) {
             edTitle.setText(project.getTitle());
             edDescription.setText(project.getDescription());
             edStartDate.setText(project.getStartDate());
             edEndDate.setText(project.getEndDate());
             cbIsBillable.setChecked(project.getIsBillable());
             cbIsActive.setChecked(project.getIsActive());
+        }
+
+        if(flowType == FlowType.ADD) {
+            homeView.setToolbarTitle("Add new project");
+        }
+
+        if(flowType == FlowType.EDIT) {
+            homeView.setToolbarTitle("Edit project");
+        }
+
+        if(flowType == FlowType.VIEW) {
+            homeView.setToolbarTitle("View project details");
+            edTitle.setEnabled(false);
+            edDescription.setEnabled(false);
+            edStartDate.setEnabled(false);
+            edEndDate.setEnabled(false);
+            cbIsBillable.setEnabled(false);
+            cbIsActive.setEnabled(false);
+            btnSubmit.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -97,6 +117,27 @@ public class AddEditFragment extends Fragment {
         if (edStartDate.getText().toString().isEmpty()) {
             isValid = false;
             edStartDate.setError("This field cannot to empty");
+        }
+
+        if(edEndDate.getText().toString().isEmpty()) {
+            isValid = false;
+            edEndDate.setError("This field cannot to empty");
+        }
+
+        if(!edStartDate.getText().toString().isEmpty()) {
+            boolean isValidDate = Utils.isValidDate(edStartDate.getText().toString());
+            if(!isValidDate) {
+                edStartDate.setError("Invalid date, expected format is YYYY-MM-DD");
+                isValid = false;
+            }
+        }
+
+        if(!edEndDate.getText().toString().isEmpty()) {
+            boolean isValidDate = Utils.isValidDate(edEndDate.getText().toString());
+            if(!isValidDate) {
+                edEndDate.setError("Invalid date, expected format is YYYY-MM-DD");
+                isValid = false;
+            }
         }
         return isValid;
     }

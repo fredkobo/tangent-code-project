@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
     android:background="@android:color/white">
 
     <EditText
@@ -25,6 +26,7 @@
         android:layout_height="60dp"
         android:layout_margin="10dp"
         android:layout_below="@id/ed_description"
+        android:inputType="date"
         android:hint="@string/start_date"/>
 
     <EditText
@@ -32,6 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_margin="10dp"
+        android:inputType="date"
         android:layout_below="@id/ed_start_date"
         android:hint="@string/end_date"/>
 
@@ -51,14 +54,16 @@
         android:layout_below="@+id/cb_is_billable"
         android:id="@+id/cb_is_active" />
 
+
     <Button
         android:id="@+id/btn_submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cb_is_active"
-        android:layout_margin="10dp"
-        android:layout_alignParentRight="true"
-        android:text="@string/submit"/>
+        style="@style/SubmitButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:enabled="true"
+        android:text="@string/submit"
+        android:textAllCaps="false" />
 
 
 </RelativeLayout>

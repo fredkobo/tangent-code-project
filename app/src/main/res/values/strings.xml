@@ -15,4 +15,8 @@
     <string name="submit">Submit</string>
     <string name="billable">Billable</string>
     <string name="active">Active</string>
+    <string name="add_project">Add project</string>
+    <string name="logout">Logout</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 </resources>

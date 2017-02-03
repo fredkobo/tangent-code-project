@@ -41,7 +41,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
         holder.btnViewDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO complete
+                homeView.startAddFragment(FlowType.VIEW, projectList.get(position));
             }
         });
 

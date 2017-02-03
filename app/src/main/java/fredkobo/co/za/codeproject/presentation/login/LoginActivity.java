@@ -1,5 +1,6 @@
 package fredkobo.co.za.codeproject.presentation.login;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private EditText edPassword;
     private TextView tvErrorText;
     private Button btnLogin;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,11 +38,20 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         tvErrorText = (TextView) findViewById(R.id.tv_error_text);
         btnLogin = (Button) findViewById(R.id.btn_login);
 
+
         edUsername.setText("admin1");
         edPassword.setText("admin1");
+
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setIndeterminate(true);
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.show();
                 loginPresenter.login(edUsername.getText().toString(), edPassword.getText().toString());
             }
         });
@@ -49,12 +60,14 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void showLoginFailureMessage(String failureMessage) {
+        progressDialog.dismiss();
         tvErrorText.setText(failureMessage);
         tvErrorText.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void authenticationSuccessful() {
+        progressDialog.dismiss();
         Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
         startActivity(homeIntent);
         finish();
@@ -62,11 +75,13 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void showUsernameFieldError(String usernameError) {
+        progressDialog.dismiss();
         edUsername.setError(usernameError);
     }
 
     @Override
     public void showPasswordFieldError(String passwordError) {
+        progressDialog.dismiss();
         edPassword.setError(passwordError);
     }
 }

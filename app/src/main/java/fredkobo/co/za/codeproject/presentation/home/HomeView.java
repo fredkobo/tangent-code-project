@@ -26,4 +26,5 @@ public interface HomeView {
     void addProject(String title, String description, String start_date, String end_date, boolean isBillable, boolean isActive);
     void editProject(int pk, String title, String description, String start_date, String end_date, boolean isBillable, boolean isActive);
     void startAddFragment(FlowType type, Project project);
+    void setToolbarTitle(String title);
 }
