@@ -95,6 +95,5 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
         projectList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, projectList.size());
-        notifyItemRangeChanged(position, projectList.size());
     }
 }

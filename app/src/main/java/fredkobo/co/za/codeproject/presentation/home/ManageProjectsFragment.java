@@ -40,8 +40,8 @@ public class ManageProjectsFragment extends Fragment implements ManageProjectVie
     }
 
     private void setUpComponents() {
-        projectAdapter = new ProjectAdapter(projectList, homeView);
         projectRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_projects);
+        projectAdapter = new ProjectAdapter(projectList, homeView);
         projectRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         projectRecyclerView.setAdapter(projectAdapter);
     }
@@ -49,5 +49,12 @@ public class ManageProjectsFragment extends Fragment implements ManageProjectVie
     @Override
     public void deleteSuccess(int deletePosition) {
         projectAdapter.removeAt(deletePosition);
+    }
+
+    @Override
+    public void updateData(ArrayList<Project> projects) {
+        projectList = projects;
+        projectAdapter = new ProjectAdapter(projects, homeView);
+        projectRecyclerView.swapAdapter(projectAdapter, false);
     }
 }

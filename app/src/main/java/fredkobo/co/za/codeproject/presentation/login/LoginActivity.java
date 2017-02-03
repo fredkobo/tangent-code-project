@@ -38,11 +38,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         tvErrorText = (TextView) findViewById(R.id.tv_error_text);
         btnLogin = (Button) findViewById(R.id.btn_login);
 
-
-        edUsername.setText("admin1");
-        edPassword.setText("admin1");
-
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);

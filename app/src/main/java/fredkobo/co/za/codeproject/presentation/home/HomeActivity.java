@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -62,6 +63,12 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        setToolbarTitle("Home");
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.add_menu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -90,12 +97,10 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     public void selectDrawerItem(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
-                popFragmentBackStack();
                 ManageProjectsFragment manageProjectsFragment = ManageProjectsFragment.newInstance(this, projectList);
                 startFragment(manageProjectsFragment);
                 break;
             case R.id.nav_add:
-                popFragmentBackStack();
                 AddEditFragment addEditFragment = AddEditFragment.newInstance(FlowType.ADD, null, this);
                 startFragment(addEditFragment);
                 break;
@@ -142,20 +147,26 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
     }
 
-    private void popFragmentBackStack() {
-        int backStackCount = getSupportFragmentManager().getBackStackEntryCount();
-        while (backStackCount > 0) {
+    @Override
+    public void onBackPressed() {
+        if(getSupportFragmentManager().getBackStackEntryCount() > 1) {
             getSupportFragmentManager().popBackStack();
-            backStackCount--;
+        } else {
+            finish();
         }
     }
 
     @Override
     public void retrieveProjectListSuccess(ArrayList<Project> projects) {
         this.projectList = projects;
-        manageProjectsFragment = ManageProjectsFragment.newInstance(this, projects);
-        startFragment(manageProjectsFragment);
+
         progressDialog.dismiss();
+        if(manageProjectsFragment == null) {
+            manageProjectsFragment = ManageProjectsFragment.newInstance(this, projects);
+            startFragment(manageProjectsFragment);
+        } else {
+            manageProjectsFragment.updateData(projects);
+        }
     }
 
     @Override
@@ -166,22 +177,21 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
     @Override
     public void editProjectSuccess(Project project) {
-        progressDialog.dismiss();
-        showDialog("Edit SUCCESS");
-        progressDialog.dismiss();
+        showToastMessage("Project successfully edited");
+        homePresenter.retrieveProjectList();
+        progressDialog.show();
     }
 
     @Override
     public void editProjectFailure(String response) {
         progressDialog.dismiss();
-        showDialog("Edit FAILED");
-        progressDialog.dismiss();
+        showDialog("Edit FAILED " + response);
     }
 
     @Override
     public void deleteSuccess() {
         manageProjectsFragment.deleteSuccess(deletePosition);
-        showDialog("Delete SUCCESS");
+        showToastMessage("Project successfully deleted");
         progressDialog.dismiss();
     }
 
@@ -193,8 +203,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
     @Override
     public void addProjectSuccess() {
-        progressDialog.dismiss();
-        showDialog("Project ADDED");
+        showToastMessage("Project successfully added");
+        homePresenter.retrieveProjectList();
+        progressDialog.show();
     }
 
     @Override
@@ -239,12 +250,17 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
     private void showDialog(String content) {
         GenericContextualDialog dialog = GenericContextualDialog.newInstance(content);
         dialog.show(getSupportFragmentManager(), "Error dialog");
+    }
+
+    private void showToastMessage(String message) {
+        Toast.makeText(HomeActivity.this, message, Toast.LENGTH_LONG).show();
     }
 
 }

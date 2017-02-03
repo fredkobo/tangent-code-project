@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CodeProject</string>
+    <string name="app_name">ePM</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="error_text">error text</string>
