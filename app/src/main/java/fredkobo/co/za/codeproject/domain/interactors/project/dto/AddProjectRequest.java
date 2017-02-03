@@ -9,7 +9,6 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Date;
 
 import fredkobo.co.za.codeproject.framework.ApplicationCache;
 import fredkobo.co.za.codeproject.framework.ServiceConfigConstants;
@@ -23,14 +22,14 @@ public class AddProjectRequest extends AsyncTask<Void, Void, String> {
 
     private String title;
     private String description;
-    private Date start_date;
-    private Date end_date;
+    private String start_date;
+    private String end_date;
     private boolean is_billable;
     private boolean is_active;
     private HomePresenterInterface homePresenter;
     private int responseCode;
 
-    public AddProjectRequest(String title, String description, Date start_date, Date end_date, boolean is_billable, boolean is_active, HomePresenterInterface homePresenter) {
+    public AddProjectRequest(String title, String description, String start_date, String end_date, boolean is_billable, boolean is_active, HomePresenterInterface homePresenter) {
         this.title = title;
         this.description = description;
         this.start_date = start_date;

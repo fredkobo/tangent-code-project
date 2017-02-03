@@ -9,10 +9,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import fredkobo.co.za.codeproject.R;
 import fredkobo.co.za.codeproject.domain.interactors.project.dto.Project;
+import fredkobo.co.za.codeproject.presentation.shared.FlowType;
 import fredkobo.co.za.codeproject.presentation.shared.GenericContextualDialog;
 
 /**
@@ -43,7 +43,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         progressDialog.setIndeterminate(true);
     }
 
-
     @Override
     public void retrieveProjectListSuccess(ArrayList<Project> projects) {
         manageProjectsFragment = ManageProjectsFragment.newInstance(this, projects);
@@ -60,21 +59,28 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     @Override
     public void editProjectSuccess(Project project) {
         progressDialog.dismiss();
+        showDialog("Edit SUCCESS");
+        progressDialog.dismiss();
     }
 
     @Override
     public void editProjectFailure(String response) {
+        progressDialog.dismiss();
+        showDialog("Edit FAILED");
         progressDialog.dismiss();
     }
 
     @Override
     public void deleteSuccess() {
         manageProjectsFragment.deleteSuccess(deletePosition);
+        showDialog("Delete SUCCESS");
+        progressDialog.dismiss();
     }
 
     @Override
     public void deleteFailed() {
-        // TODO show failure dialog
+        showDialog("Delete FAILED");
+        progressDialog.dismiss();
     }
 
     @Override
@@ -91,18 +97,25 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
     @Override
     public void deleteProjectInvoked(int pk, int position) {
+        deletePosition = position;
         homePresenter.deleteProject(pk);
     }
 
     @Override
-    public void addProject(String title, String description, Date start_date, Date end_date, boolean isBillable, boolean isActive) {
+    public void addProject(String title, String description, String start_date, String end_date, boolean isBillable, boolean isActive) {
         homePresenter.addProject(title, description, start_date, end_date, isBillable, isActive);
         progressDialog.show();
     }
 
     @Override
-    public void startAddFragment() {
-        AddEditFragment addEditFragment = AddEditFragment.newInstance(this);
+    public void editProject(int pk, String title, String description, String start_date, String end_date, boolean isBillable, boolean isActive) {
+        homePresenter.editProject(pk, title, description, start_date, end_date, isBillable, isActive);
+        progressDialog.show();
+    }
+
+    @Override
+    public void startAddFragment(FlowType type, Project project) {
+        AddEditFragment addEditFragment = AddEditFragment.newInstance(type, project, this);
         startFragment(addEditFragment);
     }
 

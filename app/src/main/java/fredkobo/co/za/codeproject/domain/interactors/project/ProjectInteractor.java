@@ -1,7 +1,5 @@
 package fredkobo.co.za.codeproject.domain.interactors.project;
 
-import java.util.Date;
-
 import fredkobo.co.za.codeproject.domain.interactors.project.dto.AddProjectRequest;
 import fredkobo.co.za.codeproject.domain.interactors.project.dto.DeleteProjectRequest;
 import fredkobo.co.za.codeproject.domain.interactors.project.dto.EditProjectRequest;
@@ -27,13 +25,13 @@ public class ProjectInteractor implements ProjectInteractorInterface {
     }
 
     @Override
-    public void EditProject(int pk, String title, String description, Date start_date, HomePresenterInterface homePresenterInterface) {
-        EditProjectRequest editProjectRequest = new EditProjectRequest(pk, title, description, start_date, homePresenterInterface);
+    public void EditProject(int pk, String title, String description, String start_date, String end_date, boolean is_billable, boolean is_active, HomePresenterInterface homePresenterInterface) {
+        EditProjectRequest editProjectRequest = new EditProjectRequest(pk, title, description, start_date, end_date, is_billable, is_active, homePresenterInterface);
         editProjectRequest.execute();
     }
 
     @Override
-    public void AddProject(String title, String description, Date start_date, Date end_date, boolean is_billable, boolean is_active, HomePresenterInterface homePresenter) {
+    public void AddProject(String title, String description, String start_date, String end_date, boolean is_billable, boolean is_active, HomePresenterInterface homePresenter) {
         AddProjectRequest addProjectRequest = new AddProjectRequest(title, description, start_date, end_date, is_billable, is_active, homePresenter);
         addProjectRequest.execute();
     }

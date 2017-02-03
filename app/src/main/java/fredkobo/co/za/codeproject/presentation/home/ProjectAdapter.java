@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import fredkobo.co.za.codeproject.R;
 import fredkobo.co.za.codeproject.domain.interactors.project.dto.Project;
+import fredkobo.co.za.codeproject.presentation.shared.FlowType;
 
 /**
  * Created by frederickkobo on 2017/02/01.
@@ -47,7 +48,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeView.startAddFragment();
+                homeView.startAddFragment(FlowType.EDIT, projectList.get(position));
             }
         });
 

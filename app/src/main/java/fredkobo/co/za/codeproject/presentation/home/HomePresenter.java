@@ -4,11 +4,10 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
-import fredkobo.co.za.codeproject.domain.interactors.project.dto.Project;
 import fredkobo.co.za.codeproject.domain.interactors.project.ProjectInteractor;
 import fredkobo.co.za.codeproject.domain.interactors.project.ProjectInteractorInterface;
+import fredkobo.co.za.codeproject.domain.interactors.project.dto.Project;
 
 /**
  * Created by frederickkobo on 2017/02/01.
@@ -20,7 +19,7 @@ public class HomePresenter implements HomePresenterInterface {
     private ProjectInteractorInterface projectInteractor;
     private Gson gson;
 
-    public HomePresenter(HomeView homeView){
+    public HomePresenter(HomeView homeView) {
         this.homeView = homeView;
         projectInteractor = new ProjectInteractor();
         gson = new Gson();
@@ -37,12 +36,12 @@ public class HomePresenter implements HomePresenterInterface {
     }
 
     @Override
-    public void editProject(int pk, String title, String description, Date start_date) {
-        projectInteractor.EditProject(pk, title, description, start_date, this);
+    public void editProject(int pk, String title, String description, String start_date, String end_date, boolean is_billable, boolean is_active) {
+        projectInteractor.EditProject(pk, title, description, start_date, end_date, is_billable, is_active, this);
     }
 
     @Override
-    public void addProject(String title, String description, Date start_date, Date end_date, boolean is_billable, boolean is_active) {
+    public void addProject(String title, String description, String start_date, String end_date, boolean is_billable, boolean is_active) {
         projectInteractor.AddProject(title, description, start_date, end_date, is_billable, is_active, this);
     }
 

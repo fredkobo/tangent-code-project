@@ -1,9 +1,9 @@
 package fredkobo.co.za.codeproject.presentation.home;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import fredkobo.co.za.codeproject.domain.interactors.project.dto.Project;
+import fredkobo.co.za.codeproject.presentation.shared.FlowType;
 
 /**
  * Created by frederickkobo on 2017/02/01.
@@ -23,6 +23,7 @@ public interface HomeView {
     void addProjectFailure(String response);
 
     void deleteProjectInvoked(int pk, int position);
-    void addProject(String title, String description, Date start_date, Date end_date, boolean isBillable, boolean isActive);
-    void startAddFragment();
+    void addProject(String title, String description, String start_date, String end_date, boolean isBillable, boolean isActive);
+    void editProject(int pk, String title, String description, String start_date, String end_date, boolean isBillable, boolean isActive);
+    void startAddFragment(FlowType type, Project project);
 }

@@ -1,7 +1,5 @@
 package fredkobo.co.za.codeproject.presentation.home;
 
-import java.util.Date;
-
 /**
  * Created by frederickkobo on 2017/02/01.
  */
@@ -9,8 +7,8 @@ import java.util.Date;
 public interface HomePresenterInterface {
     void retrieveProjectList();
     void deleteProject(int pk);
-    void editProject(int pk, String title, String description, Date start_date);
-    void addProject(String title, String description, Date start_date, Date end_date, boolean is_billable, boolean is_active);
+    void editProject(int pk, String title, String description, String start_date, String end_date, boolean is_billable, boolean is_active);
+    void addProject(String title, String description, String start_date, String end_date, boolean is_billable, boolean is_active);
 
     void onRetrieveProjectListSuccess(String response);
     void onRetrieveProjectListFailure(String response);

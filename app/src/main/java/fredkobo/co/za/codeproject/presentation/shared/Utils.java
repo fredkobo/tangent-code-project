@@ -20,4 +20,9 @@ public class Utils {
         }
         return date;
     }
+
+    public enum addOrEdit {
+        ADD,
+        EDIT
+    }
 }

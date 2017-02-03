@@ -10,10 +10,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import java.util.Date;
-
 import fredkobo.co.za.codeproject.R;
-import fredkobo.co.za.codeproject.presentation.shared.Utils;
+import fredkobo.co.za.codeproject.domain.interactors.project.dto.Project;
+import fredkobo.co.za.codeproject.presentation.shared.FlowType;
 
 /**
  * Created by frederickkobo on 2017/02/02.
@@ -30,10 +29,14 @@ public class AddEditFragment extends Fragment {
     private CheckBox cbIsBillable;
     private CheckBox cbIsActive;
     private Button btnSubmit;
+    private FlowType flowType;
+    private Project project;
 
-    public static AddEditFragment newInstance(HomeView homeView) {
+    public static AddEditFragment newInstance(FlowType flowType, Project project, HomeView homeView) {
         AddEditFragment fragment = new AddEditFragment();
         fragment.homeView = homeView;
+        fragment.flowType = flowType;
+        fragment.project = project;
         return fragment;
     }
 
@@ -53,6 +56,15 @@ public class AddEditFragment extends Fragment {
         cbIsBillable = (CheckBox) rootView.findViewById(R.id.cb_is_billable);
         cbIsActive = (CheckBox) rootView.findViewById(R.id.cb_is_active);
         btnSubmit = (Button) rootView.findViewById(R.id.btn_submit);
+
+        if(flowType == FlowType.EDIT  && project != null) {
+            edTitle.setText(project.getTitle());
+            edDescription.setText(project.getDescription());
+            edStartDate.setText(project.getStartDate());
+            edEndDate.setText(project.getEndDate());
+            cbIsBillable.setChecked(project.getIsBillable());
+            cbIsActive.setChecked(project.getIsActive());
+        }
     }
 
     private void setUpComponentListeners() {
@@ -60,12 +72,11 @@ public class AddEditFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (isValidCredentials()) {
-                    String start = edStartDate.getText().toString();
-                    Date startDate = Utils.getDateFromString(start);
-                    String end = edEndDate.getText().toString();
-                    Date endDate = Utils.getDateFromString(end);
-
-                    homeView.addProject(edTitle.getText().toString(), edDescription.getText().toString(), startDate, endDate, cbIsBillable.isChecked(), cbIsActive.isChecked());
+                    if(flowType == FlowType.EDIT) {
+                        homeView.editProject(project.getPk(), edTitle.getText().toString(), edDescription.getText().toString(), edStartDate.getText().toString(), edEndDate.getText().toString(), cbIsBillable.isChecked(), cbIsActive.isChecked());
+                    } else {
+                        homeView.addProject(edTitle.getText().toString(), edDescription.getText().toString(), edStartDate.getText().toString(), edEndDate.getText().toString(), cbIsBillable.isChecked(), cbIsActive.isChecked());
+                    }
                 }
             }
         });
